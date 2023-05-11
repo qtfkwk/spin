@@ -101,27 +101,32 @@ variant value {
 
 #### Interface open questions
 
+**TODO**: answer these questions
 * `row-result` can be very large. Should we provide some paging mechanism or a different API that allows for reading subsets of the returned data?
   * Crossing the wit boundary could potentially be expensive if the results are large enough. Giving the user control of how they read that data could be helpful.
 * Is there really a need for query *and* execute functions since at the end of the day, they are basically equivalent?
 
 #### Database migrations
 
-Database tables typically require some sort of configuration in the form of database migrations to get table schemas into the correct state. To begin with a command line option supplied to `spin up` will be available for running SQL statements on start up (i.e., `--sqlite-migration "CREATE TABLE users..."`). It will be up to the user to provide itempotent statements such that running them multiple times does not produce unexpected results.
+Database tables typically require some sort of configuration in the form of database migrations to get table schemas into the correct state. To begin with a command line option supplied to `spin up` will be available for running any arbitrary SQL statements on start up and thus will be a place for users to run their migrations (i.e., `--sqlite "CREATE TABLE users..."`). It will be up to the user to provide idempotent statements such that running them multiple times does not produce unexpected results.
 
-However, such an approach (while useful) is likely to not be sufficient for more advanced use cases. We could require the user to ensure that the database is in the correct state each time the trigger handler function is run. However, there are a few issues with this:
-* Schema tracking schemes (e.g., a "migrations" table) themselves require some sort of bootstrap step.
-* This goes against the design principle of keeping components handler functions simple and single purpose.
+##### Future approaches
 
-There are several possible ways to address this issue such as:
+This CLI approach (while useful) is likely to not be sufficient for more advanced use cases. There are several alternative ways to address the need for migrations:
 * Some mechanism for running spin components before others where the component receives the current schema version and decides whether or not to perform migrations. 
 * The spin component could expose a current schema version as an exported value type so that an exported function would not need to called. If the exported schema version does not match the current schema version, an exported migrate function then gets called.
 * A spin component that gets called just after pre-initialization finishes. Similarly, this component would expose a schema version and have an exported migration function called when the exported schema version does not match the current schema version.
-* Configuration option in spin.toml manifest for running arbitrary SQL instructions on start up (e.g., `sqlite.migration = "CREATE TABLE users..."`)
+* Configuration option in spin.toml manifest for running arbitrary SQL instructions on start up (e.g., `sqlite.execute = "CREATE TABLE users..."`)
 
 It should be noted that many of these options are not mutually exclusive and we could introduce more than one (perhaps starting with one option that will mostly be replaced later with a more generalized approach).
 
-For now, we punt on this question and only provide a mechanism for running SQL statements on start up.
+For now, we punt on this question and only provide a mechanism for running SQL statements on start up through the CLI.
+
+##### Alternatives
+
+An alternative approach that was considered but ultimately reject was to require the user to ensure that the database is in the correct state each time their trigger handler function is run (i.e., provide no bespoke mechanism for migrations - the user only has access to the database when their component runs). There are a few issues with taking such an approach:
+* Schema tracking schemes (e.g., a "migrations" table) themselves require some sort of bootstrap step.
+* This goes against the design principle of keeping components handler functions simple and single purpose.
 
 #### Implementation requirements
 
