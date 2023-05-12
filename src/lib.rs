@@ -1,4 +1,3 @@
-pub(crate) mod colors;
 pub mod commands;
 pub mod manifest;
 pub(crate) mod opts;

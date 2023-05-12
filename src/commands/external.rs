@@ -1,6 +1,6 @@
-use crate::colors::error;
 use crate::opts::PLUGIN_OVERRIDE_COMPATIBILITY_CHECK_FLAG;
 use anyhow::{anyhow, Result};
+use colors::error;
 use spin_plugins::{error::Error, manifest::warn_unsupported_version, PluginStore};
 use std::{collections::HashMap, env, process};
 use tokio::process::Command;

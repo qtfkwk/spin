@@ -759,6 +759,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "colors"
+version = "0.1.0"
+dependencies = [
+ "atty",
+ "once_cell",
+ "termcolor",
+]
+
+[[package]]
 name = "combine"
 version = "4.6.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -4961,6 +4970,7 @@ name = "spin-build"
 version = "1.2.0-pre0"
 dependencies = [
  "anyhow",
+ "colors",
  "futures",
  "serde",
  "spin-loader",
@@ -4976,7 +4986,6 @@ version = "1.2.0-pre0"
 dependencies = [
  "anyhow",
  "async-trait",
- "atty",
  "bindle",
  "bytes",
  "cargo-target-dep",
@@ -4984,6 +4993,7 @@ dependencies = [
  "clap 3.2.24",
  "cloud",
  "cloud-openapi",
+ "colors",
  "comfy-table",
  "ctrlc",
  "dialoguer 0.10.3",
@@ -5000,7 +5010,6 @@ dependencies = [
  "lazy_static",
  "levenshtein",
  "nix 0.24.3",
- "once_cell",
  "openssl",
  "outbound-http",
  "outbound-redis",
@@ -5031,7 +5040,6 @@ dependencies = [
  "spin-trigger-http",
  "subprocess",
  "tempfile",
- "termcolor",
  "tokio",
  "toml 0.6.0",
  "tracing",
